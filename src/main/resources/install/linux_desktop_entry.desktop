@@ -1,0 +1,10 @@
+[Desktop Entry]
+Categories={app.categories}
+Type=Application
+Encoding=UTF-8
+Name={app.name}
+Comment={app.desc}
+Exec={app.launcher}
+Icon=a{app.icon}
+Terminal=false
+Path={app.dir}

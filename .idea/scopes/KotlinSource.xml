@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="KotlinSource" pattern="src:com.vektorsoft.xapps.kickstart..*" />
+</component>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application version="0.0.1-SNAPSHOT" release-time="20181010112345">
+  <info>
+    <name>TestFX</name>
+    <icons>
+      <icon file-name="icon.png" sha-1="dda83a2a43f6dfe5f6afbeef9dadcf15b4bd07b9" size="10162" />
+    </icons>
+  </info>
+  <server base-url="https://57a6968b-5eeb-4dcc-9b53-5ccafc3016b9.mock.pstmn.io" />
+  <jvm version="11" >
+    <launcher file-name="testfx" sha-1="0f0a746a5ac72ce3f2d8ffd79d63a4da1ebe82ea" size="6478484" />
+    <dependencies>
+      <jar file-name="dep.jar" sha-1="1234746a5ac72ce3f2d8ffd79d63a4da1ebe82ea" size="123456" scope="modulepath" />
+    </dependencies>
+    <!--<classpath />-->
+    <!--<module-path>-->
+    <!--modules:test-fx-0.0.1-SNAPSHOT.jar-->
+    <!--</module-path>-->
+    <!--<jvm-options />-->
+    <!--<jvm-properties />-->
+    <!--<main-class />-->
+    <!--<module>com.test.testfx/com.test.TestFX.TestFX</module>-->
+    <!--<args />-->
+  </jvm>
+</application>
