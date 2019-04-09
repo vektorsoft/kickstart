@@ -33,6 +33,13 @@ class RequestBuilder {
                 .build()
     }
 
+    fun buildAppImageRequest(appId : String) : HttpRequest {
+        val uri = URI("http://localhost:8080/applications/$appId/img")
+        return HttpRequest.newBuilder(uri)
+                .GET()
+                .build();
+    }
+
     fun buildAppConfigFileRequest(applicationId : String) : HttpRequest {
         var uri = URI("http://localhost:8080/apps/" + "abcdef123" + "/content/config/linux/x64")
         return HttpRequest.newBuilder(uri)

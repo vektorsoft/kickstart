@@ -29,6 +29,7 @@ import java.net.http.HttpResponse
 import java.time.Duration
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.Executors
+import java.util.function.Consumer
 
 object DefaultHttpClient {
 
@@ -43,18 +44,24 @@ object DefaultHttpClient {
             .build()
 
     fun getAppList() {
-        println("in get app list")
         client.sendAsync(requestBuilder.buildAppListRequest(), HttpResponse.BodyHandlers.ofString())
                 .thenAccept {
                     val appList : List<App> = objectMapper.readValue(it.body(), object : TypeReference<List<App>>(){})
                     AppModel.appList.clear();
                     AppModel.appList.addAll(appList)
-                    println("applist: " + appList)
                 }
                 .exceptionally { it.printStackTrace()
                     null
                 }
 
+    }
+
+    fun getAppImage(appId : String, bodyProcessor : (ByteArray) -> Unit, errorHandler : (Throwable) -> Void?) {
+        client.sendAsync(requestBuilder.buildAppImageRequest(appId), HttpResponse.BodyHandlers.ofByteArray())
+                .thenAccept {
+                    bodyProcessor(it.body())
+                }
+                .exceptionally(errorHandler)
     }
 
     fun getAppConfig(applicationId : String) : String {

@@ -25,5 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 data class App(
         val id : String = "",
         val name : String = "",
-        val description : String = "") {
+		val headline : String = "",
+        val description : String = "",
+		val appImageUrl : String = "") {
 }

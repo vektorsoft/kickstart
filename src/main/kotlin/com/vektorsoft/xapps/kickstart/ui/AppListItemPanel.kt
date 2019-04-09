@@ -20,7 +20,9 @@
 package com.vektorsoft.xapps.kickstart.ui
 
 
+import com.vektorsoft.xapps.kickstart.http.DefaultHttpClient
 import com.vektorsoft.xapps.kickstart.model.App
+import javafx.application.Platform
 import javafx.geometry.Insets
 import javafx.scene.control.*
 import javafx.scene.image.Image
@@ -29,12 +31,13 @@ import javafx.scene.layout.ColumnConstraints
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Priority
 import javafx.scene.layout.VBox
-
+import java.net.http.HttpResponse
+import java.util.function.Consumer
 
 
 class AppListItemPanel (val app : App) : GridPane() {
 
-    private val appIcon: ImageView
+//    private val appIcon: ImageView
     private val appDetailsPane: VBox
     private val buttonsPane: VBox
     private val installButton: Button
@@ -52,11 +55,12 @@ class AppListItemPanel (val app : App) : GridPane() {
 
         columnConstraints.addAll(iconCol, detailsCol, buttonsCol)
 
-        appIcon = ImageView(Image(javaClass.getResourceAsStream("/img/icon-app.png")))
-        addColumn(0, appIcon)
+        DefaultHttpClient.getAppImage(app.id, { loadAppImage(it)}, { loadDefaultImage() })
 
         appDetailsPane = VBox()
         appDetailsPane.children.add(Label(app.name))
+        appDetailsPane.children.add(Label(app.headline))
+        appDetailsPane.children.add(Label(app.description))
         addColumn(1, appDetailsPane)
 
         buttonsPane = VBox()
@@ -85,4 +89,23 @@ class AppListItemPanel (val app : App) : GridPane() {
         add(installView, 0, 1, 3, 1)
         installView.start()
     }
+
+    private fun loadAppImage(data : ByteArray) {
+        Platform.runLater {
+            if(data.isEmpty()) {
+                addColumn(0, ImageView(Image(javaClass.getResourceAsStream("/img/icon-app.png"))))
+            } else {
+                addColumn(0, ImageView(Image(data.inputStream())))
+            }
+        }
+    }
+
+    private fun loadDefaultImage() : Void? {
+        Platform.runLater {
+            val appIcon = ImageView(Image(javaClass.getResourceAsStream("/img/icon-app.png")))
+            addColumn(0, appIcon)
+        }
+        return null
+    }
+
 }

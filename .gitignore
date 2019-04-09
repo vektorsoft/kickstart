@@ -24,13 +24,5 @@ hs_err_pid*
 
 target/
 #Intelij IDEA ignores
-.idea/checkstyle-idea.xml
-.idea/codeStyles/
-.idea/compiler.xml
-.idea/dbnavigator.xml
-.idea/encodings.xml
-.idea/misc.xml
-.idea/uiDesigner.xml
-.idea/vcs.xml
-.idea/workspace.xml
+.idea/
 
