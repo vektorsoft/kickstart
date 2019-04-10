@@ -54,7 +54,7 @@ abstract class DownloadHandler(protected val data: BinaryData) {
             logger.debug("Successfully downloaded ${data.fileName} to file ${target.absolutePath}")
             result = processResult()
         } catch(ex : Exception) {
-            result = DownloadResult(ex, bytesWritten, data.scope)
+            result = DownloadResult(ex, bytesWritten)
             logger.error("Failed to download ${data.fileName} to file ${target.absolutePath}", ex)
         }
         publisher.submit(result)
@@ -66,10 +66,10 @@ abstract class DownloadHandler(protected val data: BinaryData) {
     private fun processResult() : DownloadResult {
         val fileHash = calculateFileHash(target)
         var result : DownloadResult
-        if(fileHash != data.sha1) {
-            result = DownloadResult(data.sha1, fileHash ?: "", target.length(), data.scope)
+        if(fileHash != data.hash) {
+            result = DownloadResult(data.hash, fileHash ?: "", target.length())
         } else {
-            result = DownloadResult(DownloadResult.Status.SUCCESS, target.length(), data.scope)
+            result = DownloadResult(DownloadResult.Status.SUCCESS, target.length())
         }
         result.symLink = SymbolicLink(target.absolutePath, data.fileName)
         return result

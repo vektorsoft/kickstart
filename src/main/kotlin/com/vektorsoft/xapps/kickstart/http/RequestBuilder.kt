@@ -19,6 +19,8 @@
 
 package com.vektorsoft.xapps.kickstart.http
 
+import com.vektorsoft.xapps.kickstart.detectCpuArch
+import com.vektorsoft.xapps.kickstart.detectOs
 import com.vektorsoft.xapps.kickstart.model.BinaryData
 import java.net.URI
 import java.net.http.HttpRequest
@@ -41,7 +43,7 @@ class RequestBuilder {
     }
 
     fun buildAppConfigFileRequest(applicationId : String) : HttpRequest {
-        var uri = URI("http://localhost:8080/apps/" + "abcdef123" + "/content/config/linux/x64")
+        var uri = URI("http://localhost:8080/apps/$applicationId/content/config/${detectOs().toString().toLowerCase()}/${detectCpuArch()}")
         return HttpRequest.newBuilder(uri)
                 .header("Accept", "application/xml")
                 .GET()
@@ -49,7 +51,7 @@ class RequestBuilder {
     }
 
     fun buildBinaryDownloadUrl(data : BinaryData, serverUrl : String) : HttpRequest {
-        val uri = URI("http://localhost:8080/apps/content/${data.sha1}")
+        val uri = URI("http://localhost:8080/apps/content/${data.hash}")
         return HttpRequest.newBuilder(uri)
                 .GET()
                 .build()

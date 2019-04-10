@@ -19,12 +19,9 @@
 
 package com.vektorsoft.xapps.kickstart.model
 
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty
 
-
-class BinaryData(@JacksonXmlProperty(isAttribute = true, localName = "file-name") val fileName : String = "",
-                      @JacksonXmlProperty(isAttribute = true, localName = "sha-1") val sha1 : String = "",
-                      @JacksonXmlProperty(isAttribute = true, localName = "size") val size : Long = 0,
-                      @JacksonXmlProperty(localName = "scope", isAttribute = true) val scope : JvmDependencyScope? = null) {
+open class BinaryData(val fileName: String,
+					  val hash: String,
+					  val size: Long) {
 
 }

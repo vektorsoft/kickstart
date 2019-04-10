@@ -21,7 +21,7 @@ package com.vektorsoft.xapps.kickstart.http
 
 import com.vektorsoft.xapps.kickstart.*
 import com.vektorsoft.xapps.kickstart.model.App
-import com.vektorsoft.xapps.kickstart.model.BinaryData
+import com.vektorsoft.xapps.kickstart.model.JvmDependency
 import com.vektorsoft.xapps.kickstart.model.JvmDependencyScope
 import com.vektorsoft.xapps.kickstart.model.SymbolicLink
 import java.io.File
@@ -32,11 +32,13 @@ class DependencyDownloadHandler : DownloadHandler  {
 
     override val target: File
     val appDir : File
+    val scope : JvmDependencyScope
 
 
-    constructor(app : App,binaryData: BinaryData) : super(binaryData) {
+    constructor(app : App,binaryData: JvmDependency) : super(binaryData) {
         target = jarDirLocation(binaryData).toFile()
         appDir = appDirLocation(app).toFile()
+        scope = binaryData.dependencyScope
     }
 
     /**
@@ -50,7 +52,8 @@ class DependencyDownloadHandler : DownloadHandler  {
 
     private fun linkDirectory() : File {
         val linkDir : File
-        if(data.scope == JvmDependencyScope.MODULE_PATH) {
+
+        if(scope == JvmDependencyScope.MODULE_PATH) {
             linkDir = File(appDir, MODULE_DIR_NAME)
         } else  {
             linkDir = File(appDir, CLASSPATH_DIR_NAME)

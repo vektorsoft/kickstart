@@ -22,7 +22,7 @@ package com.vektorsoft.xapps.kickstart.http
 import com.vektorsoft.xapps.kickstart.model.JvmDependencyScope
 import com.vektorsoft.xapps.kickstart.model.SymbolicLink
 
-class DownloadResult (val status : Status, val length : Long, val dependencyScope: JvmDependencyScope?) {
+class DownloadResult (val status : Status, val length : Long) {
 
     enum class Status{SUCCESS, FAILURE, WARNING}
     var failureCause : Throwable? = null
@@ -31,11 +31,11 @@ class DownloadResult (val status : Status, val length : Long, val dependencyScop
     var symLink : SymbolicLink? = null
 
 
-    constructor(cause : Throwable?,  length : Long,  dependencyScope: JvmDependencyScope?) : this(Status.FAILURE, length, dependencyScope) {
+    constructor(cause : Throwable?,  length : Long) : this(Status.FAILURE, length) {
         this.failureCause = cause
     }
 
-    constructor(expectedHash : String, actualHash : String, length : Long,  dependencyScope: JvmDependencyScope?) : this(Status.WARNING, length, dependencyScope) {
+    constructor(expectedHash : String, actualHash : String, length : Long) : this(Status.WARNING, length) {
         this.expectedHash = expectedHash
         this.actualHash = actualHash
     }

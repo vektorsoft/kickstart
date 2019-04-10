@@ -21,15 +21,16 @@ package com.vektorsoft.xapps.kickstart
 
 import com.vektorsoft.xapps.kickstart.model.App
 import com.vektorsoft.xapps.kickstart.model.BinaryData
+import com.vektorsoft.xapps.kickstart.model.OS
+import org.apache.commons.codec.digest.DigestUtils
+import org.apache.commons.codec.digest.MessageDigestAlgorithms
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.io.File
-import java.io.FileInputStream
 import java.nio.ByteBuffer
 import java.nio.channels.ReadableByteChannel
 import java.nio.channels.WritableByteChannel
 import java.nio.file.Path
-import java.security.MessageDigest
 
 
 fun defaultBaseDirLocation() : Path? = Path.of(System.getProperty(HOME_DIR_PROPERTY), DEFAULT_BASE_DIR_NAME)
@@ -37,14 +38,14 @@ fun appDirLocation(app : App) : Path = Path.of(defaultBaseDirLocation().toString
 
 fun jarDirLocation(binary : BinaryData) : Path {
     val parts = arrayOf(
-            binary.sha1.substring(0,2),
-            binary.sha1.substring(2,4),
-            binary.sha1.substring(4,6)
+            binary.hash.substring(0,2),
+            binary.hash.substring(2,4),
+            binary.hash.substring(4,6)
     )
     return Path.of(defaultBaseDirLocation().toString(),
             DEPENDENCY_DIR_NAME,
             JAR_DIR_NAME,
-            parts[0], parts[1],parts[2],binary.sha1)
+            parts[0], parts[1],parts[2],binary.hash)
 }
 
 
@@ -68,33 +69,34 @@ fun copyData(src : ReadableByteChannel, dest: WritableByteChannel) : Long {
 }
 
 fun calculateFileHash(file : File) : String? {
+    val digestUtil = DigestUtils(MessageDigestAlgorithms.SHA_1)
     try {
-        val digest = MessageDigest.getInstance("SHA-1")
-        FileInputStream(file).use {
-            val bytes = ByteArray(8192)
-            var read : Int = it.read(bytes)
-            while(read != -1) {
-                digest.update(bytes, 0 , read)
-                read = it.read(bytes)
-            }
-            val hashBytes = digest.digest()
-            return toHex(hashBytes)
-        }
-    } catch( ex : Exception) {
+        return digestUtil.digestAsHex(file)
+    } catch(ex: Exception) {
         ex.printStackTrace()
     }
     return null
 }
 
-fun toHex(bytes : ByteArray) : String {
-    val hexString: StringBuilder = StringBuilder()
-    for (aMessageDigest:Byte in bytes) {
-        var h: String = Integer.toHexString(0xFF and aMessageDigest.toInt())
-        while (h.length < 2)
-            h = "0$h"
-        hexString.append(h)
+
+fun detectOs() : OS {
+    val osName = System.getProperty("os.name").toLowerCase()
+    if(osName.indexOf("win") >= 0) {
+        return OS.WINDOWS
+    } else if (osName.indexOf("mac") >= 0) {
+        return OS.MAC;
+    } else if(osName.indexOf("nux") >= 0) {
+        return OS.LINUX
     }
-    return hexString.toString()
+    throw IllegalStateException("Could not detectOs current OS")
+}
+
+fun detectCpuArch() : String {
+    val cpuArch = System.getProperty("os.arch")
+    if("amd64" == cpuArch || "x86_64" == cpuArch) {
+        return "x64"
+    }
+    return cpuArch
 }
 
 fun <T : Any> T.logger(clazz : Class<T>) : Lazy<Logger> {

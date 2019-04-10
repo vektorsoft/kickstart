@@ -78,7 +78,7 @@ object DefaultHttpClient {
                 }
                 .exceptionally {
                     it.printStackTrace()
-                    DownloadResult(it, 0, data.scope)
+                    DownloadResult(it, 0)
                 }
     }
 }

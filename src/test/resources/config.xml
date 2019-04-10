@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<application version="1.0.0-SNAPSHOT">
+    <info>
+        <name>deployer</name>
+        <icons>
+            <icon file-name="maicon.icns" hash="9ce8ea9e46a3999f97b06a53948507b14e20f70e" path="data/icons/maicon.icns" size="128885"/>
+        </icons>
+    </info>
+    <jvm version="8">
+        <dependencies>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="deployer" file-name="deployer-1.0.0-SNAPSHOT.jar" group-id="com.vektorsoft.xapps" hash="cd9ad8d87cad5f0de6cf19d6565f68088664c0aa" packaging="jar" scope="CLASSPATH" size="139607" version="1.0.0-SNAPSHOT" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="jaxb-core" file-name="jaxb-core-2.3.0.jar" group-id="com.sun.xml.bind" hash="d044c784e41d026778693fb44a8026c1fd9a7506" packaging="jar" scope="CLASSPATH" size="255502" version="2.3.0" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="commons-io" file-name="commons-io-2.5.jar" group-id="commons-io" hash="2852e6e05fbb95076fc091f6d1780f1f8fe35e0f" packaging="jar" scope="CLASSPATH" size="208700" version="2.5" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="deployer-client" file-name="deployer-client-1.0.0-SNAPSHOT.jar" group-id="com.vektorsoft.xapps" hash="a16d7b3b02433478da09d7f885d74b1ae24879fa" packaging="jar" scope="CLASSPATH" size="20760" version="1.0.0-SNAPSHOT" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="jaxb-api" file-name="jaxb-api-2.3.1.jar" group-id="javax.xml.bind" hash="8531ad5ac454cc2deb9d4d32c40c4d7451939b5d" packaging="jar" scope="CLASSPATH" size="128076" version="2.3.1" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="kotlin-stdlib" file-name="kotlin-stdlib-1.3.10.jar" group-id="org.jetbrains.kotlin" hash="b178c1501609c6e4ee8be635513cb023a466457d" packaging="jar" scope="CLASSPATH" size="1181292" version="1.3.10" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="javafx-controls" file-name="javafx-controls-11.jar" group-id="org.openjfx" hash="58d961774262ec972bf304e16c154a8e18c2050b" packaging="jar" scope="CLASSPATH" size="306" version="11" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="javafx-graphics" file-name="javafx-graphics-11.jar" group-id="org.openjfx" hash="a736dd079047ec0b72b8c4970842a5c5e0c19f2f" packaging="jar" scope="CLASSPATH" size="306" version="11" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="commons-codec" file-name="commons-codec-1.12.jar" group-id="commons-codec" hash="47a28ef1ed31eb182b44e15d49300dee5fadcf6a" packaging="jar" scope="CLASSPATH" size="339669" version="1.12" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="logback-core" file-name="logback-core-1.2.3.jar" group-id="ch.qos.logback" hash="864344400c3d4d92dfeb0a305dc87d953677c03c" packaging="jar" scope="CLASSPATH" size="471901" version="1.2.3" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="maven-invoker" file-name="maven-invoker-3.0.1.jar" group-id="org.apache.maven.shared" hash="d98b7d7aeb575a0d677a3c164232e86c6cd42f11" packaging="jar" scope="CLASSPATH" size="33031" version="3.0.1" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="javafx-fxml" file-name="javafx-fxml-11.jar" group-id="org.openjfx" hash="8e523177e8fd7c2c5e54ba29fe09f65ee60e7ba3" packaging="jar" scope="CLASSPATH" size="302" version="11" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="zt-zip" file-name="zt-zip-1.13.jar" group-id="org.zeroturnaround" hash="3167064ecff25549375645d0afdd5c7ebbc232db" packaging="jar" scope="CLASSPATH" size="110605" version="1.13" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="jaxb-impl" file-name="jaxb-impl-2.3.1.jar" group-id="com.sun.xml.bind" hash="a1a12b85ba1435b4189e065f7dafcc3fb9410d38" packaging="jar" scope="CLASSPATH" size="1099204" version="2.3.1" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="plexus-component-annotations" file-name="plexus-component-annotations-1.7.1.jar" group-id="org.codehaus.plexus" hash="862abca6deff0fff241a835a33d22559e9132069" packaging="jar" scope="CLASSPATH" size="4288" version="1.7.1" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="kotlin-stdlib-common" file-name="kotlin-stdlib-common-1.3.10.jar" group-id="org.jetbrains.kotlin" hash="1b19d99229dcedad7caf50534dce38fe82845269" packaging="jar" scope="CLASSPATH" size="151024" version="1.3.10" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="logback-classic" file-name="logback-classic-1.2.3.jar" group-id="ch.qos.logback" hash="7c4f3c474fb2c041d8028740440937705ebb473a" packaging="jar" scope="CLASSPATH" size="290339" version="1.2.3" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="javafx-base" file-name="javafx-base-11.jar" group-id="org.openjfx" hash="09fcd3e8e3227ec97bf503f7991fad1f3b14d005" packaging="jar" scope="CLASSPATH" size="302" version="11" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="javax.activation-api" file-name="javax.activation-api-1.2.0.jar" group-id="javax.activation" hash="85262acf3ca9816f9537ca47d5adeabaead7cb16" packaging="jar" scope="CLASSPATH" size="56674" version="1.2.0" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="slf4j-api" file-name="slf4j-api-1.7.25.jar" group-id="org.slf4j" hash="da76ca59f6a57ee3102f8f9bd9cee742973efa8a" packaging="jar" scope="CLASSPATH" size="41203" version="1.7.25" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="maven-shared-utils" file-name="maven-shared-utils-3.2.1.jar" group-id="org.apache.maven.shared" hash="08dd4dfb1d2d8b6969f6462790f82670bcd35ce2" packaging="jar" scope="CLASSPATH" size="166562" version="3.2.1" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="annotations" file-name="annotations-13.0.jar" group-id="org.jetbrains" hash="919f0dfe192fb4e063e7dacadee7f8bb9a2672a9" packaging="jar" scope="CLASSPATH" size="17536" version="13.0" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="javafx-graphics" classifier="mac" file-name="javafx-graphics-11-mac.jar" group-id="org.openjfx" hash="0af47a6d3668d3ce1c61e1fe13c44471b6f8d469" packaging="jar" scope="CLASSPATH" size="4803296" version="11" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="javafx-base" classifier="mac" file-name="javafx-base-11-mac.jar" group-id="org.openjfx" hash="4b060dad0affd866df9d959e064faa8a1a2f4af0" packaging="jar" scope="CLASSPATH" size="750040" version="11" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="javafx-controls" classifier="mac" file-name="javafx-controls-11-mac.jar" group-id="org.openjfx" hash="e3a24a14e8732abc6dc173f15872dc63e2a32e16" packaging="jar" scope="CLASSPATH" size="2511057" version="11" xsi:type="mavenDependency"/>
+            <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="javafx-fxml" classifier="mac" file-name="javafx-fxml-11-mac.jar" group-id="org.openjfx" hash="e0f5bb81e21054b59f2ebfa727d40a90ee0260d3" packaging="jar" scope="CLASSPATH" size="127394" version="11" xsi:type="mavenDependency"/>
+        </dependencies>
+        <main-class>com.vektorsoft.xapps.deployer.Deployer</main-class>
+        <jvm-options>-Xms=64m -Xmx=128m</jvm-options>
+        <system-properties>-Dprop1=value1  -Dprop2=value2</system-properties>
+        <splash-screen file-name="splash.png" hash="c8f41ce45dd34c82736a23e1997180a0a85a0cfb" path="data/splash.png" size="28044"/>
+        <launcher file-name="deployer" hash="164e18abc29c120030d9c69a7adbb7d487485726" size="2548551"/>
+    </jvm>
+    <server base-url="http://localhost:8080" name="My Server"/>
+</application>

@@ -21,11 +21,13 @@ package com.vektorsoft.xapps.kickstart.service
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper
 import com.vektorsoft.xapps.kickstart.appDirLocation
+import com.vektorsoft.xapps.kickstart.detectOs
 import com.vektorsoft.xapps.kickstart.http.*
 import com.vektorsoft.xapps.kickstart.logger
 import com.vektorsoft.xapps.kickstart.model.App
 import com.vektorsoft.xapps.kickstart.model.BinaryData
-import com.vektorsoft.xapps.kickstart.model.RuntimeConfig
+import com.vektorsoft.xapps.kickstart.model.DeploymentDescriptor
+import com.vektorsoft.xapps.kickstart.model.OS
 import javafx.concurrent.Task
 import java.io.File
 import java.io.IOException
@@ -36,15 +38,22 @@ import java.util.concurrent.Flow
 
 class InstallTask(val app: App) : Task<Void>(), Flow.Subscriber<DownloadResult> {
 
-    companion object {
-        val LOGGER by logger(Companion::class.java)
-    }
+    val logger by logger(InstallTask::class.java)
 
-    private val mapper = XmlMapper()
-    private val installProcessor = LinuxInstallationProcessor()
+
+    private val installProcessor : InstallationProcessor
     private var subscription : Flow.Subscription? = null
     private var totalDownload : Long = 0
     private var currentDownload : Long = 0
+
+    init {
+    	val os = detectOs()
+        when(os) {
+            OS.MAC -> installProcessor = MacInstallationProcessor()
+            OS.LINUX -> installProcessor = MacInstallationProcessor()
+            OS.WINDOWS -> installProcessor = MacInstallationProcessor()
+        }
+    }
 
 
     override fun call(): Void? {
@@ -52,15 +61,16 @@ class InstallTask(val app: App) : Task<Void>(), Flow.Subscriber<DownloadResult> 
             updateMessage("Initializing installation...")
             val appDir = createDirectories()
             updateMessage("Created application directory ${appDir.absolutePath}")
-            val config = getApplicationConfig(appDir)
-            updateMessage("Fetched application config")
-            val appConfig = mapper.readValue<RuntimeConfig>(config, RuntimeConfig::class.java)
-            totalDownload = calculateTotalDownloadSize(appConfig)
-            LOGGER.info("Total download size for application {} is {}", app.name, totalDownload)
+            val deploymentConfigFile = getDeploymentConfigFile(appDir)
+            updateMessage("Fetched application deployment config")
+            val deploymentConfig = DeploymentDescriptor(deploymentConfigFile)
+            deploymentConfig.processConfig()
+            totalDownload = deploymentConfig.totalDownloadSize
+            logger.info("Total download size for application {} is {}", app.name, totalDownload)
             updateMessage("Downloading application...")
-            download(appConfig)
+            download(deploymentConfig)
             updateMessage("Performing installation...")
-            installProcessor.performInstall(appConfig, appDir)
+//            installProcessor.performInstalation(deploymentConfig, appDir, app)
 
         } catch (ex: Exception) {
             ex.printStackTrace()
@@ -90,7 +100,7 @@ class InstallTask(val app: App) : Task<Void>(), Flow.Subscriber<DownloadResult> 
     private fun createDirectories(): File {
         val appDir = appDirLocation(app).toFile()
         if (!appDir.exists()) {
-            LOGGER.info("Creating app directory {}", appDir.absolutePath)
+            logger.info("Creating app directory {}", appDir.absolutePath)
             val success = appDir.mkdirs()
             return if (success) appDir else throw IOException("Could not create application directory")
         } else {
@@ -98,29 +108,22 @@ class InstallTask(val app: App) : Task<Void>(), Flow.Subscriber<DownloadResult> 
         }
     }
 
-    private fun getApplicationConfig(targetDir: File): String {
+    private fun getDeploymentConfigFile(targetDir: File): File {
         val data = DefaultHttpClient.getAppConfig(app.id)
-        val filePath = Path.of(targetDir.absolutePath, "application.xml")
+        val filePath = Path.of(targetDir.absolutePath, "config.xml")
         Files.write(filePath, data.toByteArray(StandardCharsets.UTF_8))
-        return data
+        return filePath.toFile()
     }
 
-    private fun calculateTotalDownloadSize(config : RuntimeConfig) : Long {
-        var total = 0L
-        config.info.icon.forEach { total += it.size }
-        total += config.jvm.launcher.size
-        config.jvm.jar.forEach { total += it.size }
-
-        return total
-    }
-
-    private fun download(appConfig : RuntimeConfig) {
-        val dataList = mutableListOf<Pair<BinaryData, DownloadHandler>>(
-                Pair(appConfig.info.icon[0], SimpleDownloadHandler(app, appConfig.info.icon[0])))
-        dataList.add(Pair(appConfig.jvm.launcher, LauncherDownloadHandler(app, appConfig.jvm.launcher)))
+    private fun download(deploymentConfig : DeploymentDescriptor) {
+        val dataList = mutableListOf<Pair<BinaryData, DownloadHandler>>()
+        for(icon in deploymentConfig.icons) {
+            dataList.add(Pair(icon, SimpleDownloadHandler(app, icon)))
+        }
+        dataList.add(Pair(deploymentConfig.jvmDescriptor.launcher, LauncherDownloadHandler(app, deploymentConfig.jvmDescriptor.launcher)))
 
         // get dependencies to download
-        for(jar in appConfig.jvm.jar) {
+        for(jar in deploymentConfig.jvmDescriptor.dependencies) {
             dataList.add(Pair(jar, DependencyDownloadHandler(app, jar)))
         }
 

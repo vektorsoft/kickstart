@@ -27,5 +27,5 @@ const val JAR_DIR_NAME = "jars"
 const val MODULE_DIR_NAME = "modules"
 const val CLASSPATH_DIR_NAME = "cp"
 
-const val DEPENDENCY_SCOPE_MODULEPATH = "modulepath"
-const val DEPENDENCY_SCOPE_CLASSPATH = "classpath"
+const val DEPENDENCY_SCOPE_MODULEPATH = "MODULEPATH"
+const val DEPENDENCY_SCOPE_CLASSPATH = "CLASSPATH"
