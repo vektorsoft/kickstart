@@ -24,12 +24,14 @@ class DeploymentDescriptor(private val configFile : File) {
 
 	val icons = mutableListOf<BinaryData>()
 	lateinit var jvmDescriptor: JvmDescriptor
+	lateinit var appVersion : String
 	var totalDownloadSize = 0L
 
 	fun processConfig() {
 		val docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder()
 		val configDoc = docBuilder.parse(configFile)
 		val xpath = XPathFactory.newInstance().newXPath()
+		appVersion = xpath.evaluate("/application/@jvmVersion", configDoc, XPathConstants.STRING) as String
 
 		processIcons(configDoc, xpath)
 		jvmDescriptor = JvmDescriptor(configDoc)

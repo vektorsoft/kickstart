@@ -8,7 +8,6 @@
 
 package com.vektorsoft.xapps.kickstart.http
 
-import com.vektorsoft.xapps.kickstart.model.JvmDependencyScope
 import com.vektorsoft.xapps.kickstart.model.SymbolicLink
 
 class DownloadResult (val status : Status, val length : Long) {

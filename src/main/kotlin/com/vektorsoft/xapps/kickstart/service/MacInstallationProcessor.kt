@@ -8,8 +8,7 @@
 
 package com.vektorsoft.xapps.kickstart.service
 
-import com.vektorsoft.xapps.kickstart.HOME_DIR_PROPERTY
-import com.vektorsoft.xapps.kickstart.logger
+import com.vektorsoft.xapps.kickstart.*
 import com.vektorsoft.xapps.kickstart.model.App
 import com.vektorsoft.xapps.kickstart.model.DeploymentDescriptor
 import java.io.File
@@ -32,8 +31,11 @@ class MacInstallationProcessor : InstallationProcessor {
 		// copy resources
 		moveIcons(descriptor, appDir)
 		Files.move(Path.of(appDir.absolutePath, descriptor.jvmDescriptor.launcher.fileName), Path.of(macOsDir.absolutePath, descriptor.jvmDescriptor.launcher.fileName), StandardCopyOption.REPLACE_EXISTING)
-
+		Files.move(Path.of(appDir.absolutePath, APP_RUNTIME_CONFIG_FILE), Path.of(macOsDir.absolutePath, APP_RUNTIME_CONFIG_FILE), StandardCopyOption.REPLACE_EXISTING)
+		Files.move(Path.of(appDir.absolutePath, descriptor.jvmDescriptor.splashScreen.fileName), Path.of(macOsDir.absolutePath, descriptor.jvmDescriptor.splashScreen.fileName), StandardCopyOption.REPLACE_EXISTING)
+		moveDependencies(appDir)
 		createInfoPlist(descriptor, application)
+
 	}
 
 	private fun createBundleDirs(application: App) {
@@ -54,6 +56,18 @@ class MacInstallationProcessor : InstallationProcessor {
 		}
 	}
 
+	private fun moveDependencies(appDir: File) {
+		logger.debug("Moving dependency directories")
+		val dirs = listOf(
+				File(appDir, CLASSPATH_DIR_NAME),
+				File(appDir, MODULE_DIR_NAME))
+		dirs.forEach {
+			if(it.exists()) {
+				Files.move(it.toPath(), Path.of(macOsDir.absolutePath, it.name), StandardCopyOption.REPLACE_EXISTING)
+			}
+		}
+	}
+
 	private fun createInfoPlist(descriptor: DeploymentDescriptor, application: App)  {
 		logger.debug("Processing Info.plist file")
 		val input = javaClass.getResourceAsStream("/install/Info.plist")
@@ -63,7 +77,7 @@ class MacInstallationProcessor : InstallationProcessor {
 				.replace("{bundle.icon}", descriptor.icons[0].fileName)
 				.replace("{bundle.id}", application.id)
 				.replace("{bundle.name}", "some.bundle.name")
-				.replace("{bundle.version}", "1.0.0")
+				.replace("{bundle.jvmVersion}", "1.0.0")
 		File(bundleContentsDir, "Info.plist").writeText(replaced,StandardCharsets.UTF_8)
 	}
 }

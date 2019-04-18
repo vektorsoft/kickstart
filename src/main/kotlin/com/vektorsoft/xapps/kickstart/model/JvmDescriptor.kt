@@ -21,12 +21,16 @@ class JvmDescriptor(val configDoc : Document) {
     val dependencies = mutableListOf<JvmDependency>()
     lateinit var launcher : BinaryData
     lateinit var splashScreen : BinaryData
+    lateinit var mainClass : String
+	lateinit var jvmVersion : String
     var totalSize = 0L
 
     fun processConfiguration() {
         processDependencies(configDoc, xpath)
         processLauncher(configDoc, xpath)
         processSplashScreen(configDoc, xpath)
+        mainClass = xpath.evaluate("/application/jvm/main-class/text()", configDoc, XPathConstants.STRING) as String
+		jvmVersion = xpath.evaluate("/application/jvm/@jvmVersion", configDoc, XPathConstants.STRING) as String
     }
 
     private fun processDependencies(doc : Document, xpath: XPath) {
@@ -55,6 +59,7 @@ class JvmDescriptor(val configDoc : Document) {
         splashScreen = createBinaryData(splashNode as Element)
         totalSize += splashScreen.size
     }
+
 
     private fun createBinaryData(element : Element) : BinaryData {
         return BinaryData(element.getAttribute("file-name"),

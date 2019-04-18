@@ -37,7 +37,11 @@ fun jarDirLocation(binary : BinaryData) : Path {
             parts[0], parts[1],parts[2],binary.hash)
 }
 
-
+fun jvmDirLocation(version : String) : Path {
+	val jvmsBaseDir = Path.of(defaultBaseDirLocation().toString(), JVM_DIR_NAME)
+	val targetJvmDirName = "jvm-" + version
+	return Path.of(jvmsBaseDir.toString(), targetJvmDirName)
+}
 
 fun copyData(src : ReadableByteChannel, dest: WritableByteChannel) : Long {
     val buffer : ByteBuffer = ByteBuffer.allocate(8 * 1024)
