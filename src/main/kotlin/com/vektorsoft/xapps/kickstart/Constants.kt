@@ -20,3 +20,8 @@ const val APP_RUNTIME_CONFIG_FILE = "application.xml"
 
 const val DEPENDENCY_SCOPE_MODULEPATH = "MODULEPATH"
 const val DEPENDENCY_SCOPE_CLASSPATH = "CLASSPATH"
+
+/**
+ * Binary mask to check executable flag of Unix file permissions
+ */
+const val EXEC_MODE_MASK =  0b001001001

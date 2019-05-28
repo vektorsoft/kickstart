@@ -8,9 +8,11 @@
 
 package com.vektorsoft.xapps.kickstart.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
-open class BinaryData(val fileName: String,
-					  val hash: String,
-					  val size: Long) {
+@JsonIgnoreProperties(ignoreUnknown = true)
+open class BinaryData(val fileName: String = "",
+					  val hash: String = "",
+					  val size: Long = 0) {
 
 }

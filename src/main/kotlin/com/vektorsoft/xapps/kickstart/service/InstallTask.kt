@@ -121,13 +121,39 @@ class InstallTask(val app: App) : Task<Void>(), Flow.Subscriber<DownloadResult> 
         for(jar in deploymentConfig.jvmDescriptor.dependencies) {
             dataList.add(Pair(jar, DependencyDownloadHandler(app, jar)))
         }
+        // check if JVM download is required
+        if(!isJvmPresent(deploymentConfig.jvmDescriptor)) {
+            logger.info("JVM not present, requesting download")
+            val jvmBinaryData = DefaultHttpClient.getJvmBinaryInfo(deploymentConfig.jvmDescriptor.provider,
+                    deploymentConfig.jvmDescriptor.jdkVersion,
+                    deploymentConfig.jvmDescriptor.binaryType,
+                    deploymentConfig.jvmDescriptor.implementation,
+                    deploymentConfig.jvmDescriptor.exactVersion)
+            logger.debug("Received JVM info from server")
+            dataList.add(Pair(jvmBinaryData, JvmDownloadHandler(jvmBinaryData)))
+            logger.debug("Submitted JVM download request")
+            totalDownload += jvmBinaryData.size
+        } else {
+            logger.info("Required JVM already present, no download required")
+        }
 
         val results = dataList.map {
             it.second.publisher.subscribe(this)
-            DefaultHttpClient.downloadBinaryData(it.first, it.second)
+            if(it.second is JvmDownloadHandler) {
+                DefaultHttpClient.downloadJvm(deploymentConfig.jvmDescriptor.provider,
+                        deploymentConfig.jvmDescriptor.jdkVersion,
+                        deploymentConfig.jvmDescriptor.binaryType,
+                        deploymentConfig.jvmDescriptor.implementation,
+                        deploymentConfig.jvmDescriptor.exactVersion,
+                        it.second)
+            } else {
+                DefaultHttpClient.downloadBinaryData(it.first, it.second)
+            }
         }
+
         results.forEach { it.join() } // wait for all futures to complete
     }
+
 
     private fun createApplicationConfigFile(appDir : File, deploymentDescriptor: DeploymentDescriptor) {
         logger.info("Creating application runtime config file")
