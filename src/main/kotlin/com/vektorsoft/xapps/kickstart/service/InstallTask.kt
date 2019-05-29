@@ -160,11 +160,21 @@ class InstallTask(val app: App) : Task<Void>(), Flow.Subscriber<DownloadResult> 
         val document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
         val appElement = document.createElement("application")
         document.appendChild(appElement)
-        appElement.setAttribute("jvmVersion", deploymentDescriptor.appVersion)
+        appElement.setAttribute("version", deploymentDescriptor.appVersion)
 
         val jvmElement = document.createElement("jvm")
-        jvmElement.setAttribute("jvmVersion", deploymentDescriptor.jvmDescriptor.jvmVersion)
-        jvmElement.setAttribute("jvm-dir", jvmDirLocation(deploymentDescriptor.jvmDescriptor.jvmVersion).toString())
+        jvmElement.setAttribute("provider", deploymentDescriptor.jvmDescriptor.provider)
+        jvmElement.setAttribute("jdk-version", deploymentDescriptor.jvmDescriptor.jdkVersion)
+        jvmElement.setAttribute("binary-type", deploymentDescriptor.jvmDescriptor.binaryType)
+        jvmElement.setAttribute("implementation", deploymentDescriptor.jvmDescriptor.implementation)
+        val exactVersion = deploymentDescriptor.jvmDescriptor.exactVersion ?: ""
+        if(exactVersion.isNotEmpty() && exactVersion.isNotBlank()) {
+            jvmElement.setAttribute("exact-version", exactVersion)
+        }
+        // create JVM base dir element
+        val jvmBaseDirElement = document.createElement("jvm-base-dir")
+        jvmBaseDirElement.textContent = jvmDirLocation().toString()
+        jvmElement.appendChild(jvmBaseDirElement)
 
         val classpathElement = document.createElement("classpath")
         val classpath = StringBuilder()

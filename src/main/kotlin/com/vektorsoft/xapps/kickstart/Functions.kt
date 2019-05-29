@@ -40,11 +40,6 @@ fun jarDirLocation(binary: BinaryData): Path {
 			parts[0], parts[1], parts[2], binary.hash)
 }
 
-fun jvmDirLocation(version: String): Path {
-	val jvmsBaseDir = jvmDirLocation()
-	val targetJvmDirName = "jvm-" + version
-	return Path.of(jvmsBaseDir.toString(), targetJvmDirName)
-}
 
 fun isJvmPresent(jvmDescriptor: JvmDescriptor) : Boolean {
 	val sb = StringBuilder(jvmDescriptor.provider).append("-")
@@ -55,7 +50,7 @@ fun isJvmPresent(jvmDescriptor: JvmDescriptor) : Boolean {
 		sb.append("-").append(jvmDescriptor.exactVersion)
 	}
 	val fileName = sb.toString()
-	val target = jvmDirLocation().toFile().listFiles().find { it.name.equals(fileName) }
+	val target = jvmDirLocation().toFile().listFiles().find { it.name.startsWith(fileName) }
 	return target != null
 }
 

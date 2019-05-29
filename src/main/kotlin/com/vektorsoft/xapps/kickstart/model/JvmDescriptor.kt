@@ -22,7 +22,6 @@ class JvmDescriptor(val configDoc: Document) {
 	lateinit var launcher: BinaryData
 	lateinit var splashScreen: BinaryData
 	lateinit var mainClass: String
-	lateinit var jvmVersion: String
 	lateinit var provider : String
 	lateinit var jdkVersion : String
 	lateinit var binaryType : String
@@ -35,7 +34,6 @@ class JvmDescriptor(val configDoc: Document) {
 		processLauncher(configDoc, xpath)
 		processSplashScreen(configDoc, xpath)
 		mainClass = xpath.evaluate("/application/jvm/main-class/text()", configDoc, XPathConstants.STRING) as String
-		jvmVersion = xpath.evaluate("/application/jvm/@jvmVersion", configDoc, XPathConstants.STRING) as String
 		provider = (xpath.evaluate("/application/jvm/@provider", configDoc, XPathConstants.STRING) as String).toLowerCase()
 		jdkVersion = xpath.evaluate("application/jvm/@version", configDoc, XPathConstants.STRING) as String
 		jdkVersion = JdkVersion.valueOf(jdkVersion).display
