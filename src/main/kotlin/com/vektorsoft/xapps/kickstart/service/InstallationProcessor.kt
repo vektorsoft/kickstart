@@ -15,4 +15,6 @@ import java.io.File
 interface InstallationProcessor {
 
 	fun performInstalation(descriptor : DeploymentDescriptor, appDir : File, application : App)
+
+	fun cleanup(descriptor: DeploymentDescriptor, appDir: File)
 }

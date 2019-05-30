@@ -29,6 +29,13 @@ class LinuxInstallationProcessor : InstallationProcessor {
         logger.debug("Desktop entry data: {}", entryData)
         File(shortcutDir, application.name.trim() + ".desktop").writeText(entryData, StandardCharsets.UTF_8)
         logger.debug("Wrote menu shortcut file")
+        logger.info("Installation successfull")
+    }
+
+    override fun cleanup(descriptor: DeploymentDescriptor, appDir: File) {
+        // remove downloaded config file
+        val configFile = File(appDir, "config.xml")
+        configFile.delete()
     }
 
     private fun findMenuShortcutDirectory() : File {

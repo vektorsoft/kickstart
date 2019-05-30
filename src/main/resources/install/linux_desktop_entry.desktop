@@ -5,6 +5,6 @@ Encoding=UTF-8
 Name={app.name}
 Comment={app.desc}
 Exec={app.launcher}
-Icon=a{app.icon}
+Icon={app.icon}
 Terminal=false
 Path={app.dir}

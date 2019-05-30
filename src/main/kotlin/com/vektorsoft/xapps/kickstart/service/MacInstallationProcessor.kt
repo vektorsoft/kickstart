@@ -41,6 +41,12 @@ class MacInstallationProcessor : InstallationProcessor {
 		logger.info("Installation completed successfully")
 	}
 
+	override fun cleanup(descriptor: DeploymentDescriptor, appDir: File) {
+		// remove downloaded config file
+		val configFile = File(appDir, "config.xml")
+		configFile.delete()
+	}
+
 	private fun createBundleDirs(application: App) {
 		logger.info("Creating application bundle directory structure")
 		val userHomeDir = System.getProperty(HOME_DIR_PROPERTY)

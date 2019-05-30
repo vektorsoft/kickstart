@@ -20,4 +20,8 @@ class WindowsInstallationProcessor : InstallationProcessor {
 	override fun performInstalation(descriptor: DeploymentDescriptor, appDir: File, application: App) {
 		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
 	}
+
+	override fun cleanup(descriptor: DeploymentDescriptor, appDir: File) {
+		TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+	}
 }

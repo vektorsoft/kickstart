@@ -66,6 +66,7 @@ class InstallTask(val app: App) : Task<Void>(), Flow.Subscriber<DownloadResult> 
 			updateMessage("Performing installation...")
 			createApplicationConfigFile(appDir, deploymentConfig)
 			installProcessor.performInstalation(deploymentConfig, appDir, app)
+			installProcessor.cleanup(deploymentConfig, appDir)
 
 		} catch (ex: Exception) {
 			ex.printStackTrace()
