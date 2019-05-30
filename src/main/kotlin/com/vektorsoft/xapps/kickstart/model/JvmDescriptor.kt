@@ -22,6 +22,9 @@ class JvmDescriptor(val configDoc: Document) {
 	lateinit var launcher: BinaryData
 	lateinit var splashScreen: BinaryData
 	lateinit var mainClass: String
+	var jvmOptions : String? = null
+	var jvmSystemProperties : String? = null
+	var programArguments : String? = null
 	lateinit var provider : String
 	lateinit var jdkVersion : String
 	lateinit var binaryType : String
@@ -31,9 +34,12 @@ class JvmDescriptor(val configDoc: Document) {
 
 	fun processConfiguration() {
 		processDependencies(configDoc, xpath)
-		processLauncher(configDoc, xpath)
-		processSplashScreen(configDoc, xpath)
+		launcher = xmlToBinaryData(configDoc, xpath, "//application/jvm/launcher")
+		splashScreen = xmlToBinaryData(configDoc, xpath, "//application/jvm/splash-screen")
 		mainClass = xpath.evaluate("/application/jvm/main-class/text()", configDoc, XPathConstants.STRING) as String
+		jvmOptions = xpath.evaluate("/application/jvm/jvm-options/text()", configDoc, XPathConstants.STRING) as String
+		jvmSystemProperties = xpath.evaluate("/application/jvm/system-properties/text()", configDoc, XPathConstants.STRING) as String
+		programArguments = xpath.evaluate("/application/jvm/arguments/text()", configDoc, XPathConstants.STRING) as String
 		provider = (xpath.evaluate("/application/jvm/@provider", configDoc, XPathConstants.STRING) as String).toLowerCase()
 		jdkVersion = xpath.evaluate("application/jvm/@version", configDoc, XPathConstants.STRING) as String
 		jdkVersion = JdkVersion.valueOf(jdkVersion).display
@@ -55,18 +61,12 @@ class JvmDescriptor(val configDoc: Document) {
 		}
 	}
 
-	private fun processLauncher(doc: Document, xpath: XPath) {
-		val launcherNode = xpath.evaluate("//application/jvm/launcher", doc, XPathConstants.NODE)
 
-		launcher = createBinaryData(launcherNode as Element)
-		totalSize += launcher.size
-	}
-
-	private fun processSplashScreen(doc: Document, xpath: XPath) {
-		val splashNode = xpath.evaluate("//application/jvm/splash-screen", doc, XPathConstants.NODE)
-
-		splashScreen = createBinaryData(splashNode as Element)
-		totalSize += splashScreen.size
+	private fun xmlToBinaryData(doc : Document, xpath : XPath, expression : String) : BinaryData {
+		val node = xpath.evaluate(expression, doc, XPathConstants.NODE)
+		val binaryData = createBinaryData(node as Element)
+		totalSize += binaryData.size
+		return binaryData
 	}
 
 

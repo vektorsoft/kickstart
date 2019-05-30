@@ -10,11 +10,13 @@ package com.vektorsoft.xapps.kickstart
 
 import com.vektorsoft.xapps.kickstart.controller.HomePageController
 import com.vektorsoft.xapps.kickstart.http.DefaultHttpClient
+import com.vektorsoft.xapps.kickstart.model.AppModel
 import javafx.application.Application
 import javafx.scene.Scene
 import javafx.stage.Stage
 import javafx.scene.Parent
 import javafx.fxml.FXMLLoader
+import java.util.*
 
 
 class XApps : Application() {
@@ -34,6 +36,15 @@ class XApps : Application() {
         stage?.setScene(scene)
         stage?.show()
     }
+
+	override fun init() {
+		val input = this.javaClass.getResourceAsStream("/config.properties")
+		input.use {
+			val props = Properties()
+			props.load(it)
+			AppModel.currentSeverBaseUrl.value = props.getProperty(DEFAULT_SERVER_PROPERTY)
+		}
+	}
 }
 
 fun main(args : Array<String>) {

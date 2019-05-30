@@ -9,21 +9,25 @@
 package com.vektorsoft.xapps.kickstart.service
 
 import com.vektorsoft.xapps.kickstart.logger
+import com.vektorsoft.xapps.kickstart.model.App
 import com.vektorsoft.xapps.kickstart.model.DeploymentDescriptor
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.nio.file.Path
 
-class LinuxInstallationProcessor {
+/**
+ * Installer for Linux platform.
+ */
+class LinuxInstallationProcessor : InstallationProcessor {
 
     val logger by logger(LinuxInstallationProcessor::class.java)
 
-    fun performInstall(descriptor: DeploymentDescriptor, installDir : File) {
+    override fun performInstalation(descriptor: DeploymentDescriptor, appDir: File, application: App) {
         val shortcutDir = findMenuShortcutDirectory()
         logger.debug("Found menu shortcut directory {}", shortcutDir.absolutePath)
-        val entryData = createDesktopEntryContent(descriptor, installDir)
+        val entryData = createDesktopEntryContent(descriptor, appDir, application.name)
         logger.debug("Desktop entry data: {}", entryData)
-//        File(shortcutDir, descriptor.info.name.trim() + ".desktop").writeText(entryData, StandardCharsets.UTF_8)
+        File(shortcutDir, application.name.trim() + ".desktop").writeText(entryData, StandardCharsets.UTF_8)
         logger.debug("Wrote menu shortcut file")
     }
 
@@ -31,13 +35,13 @@ class LinuxInstallationProcessor {
         return Path.of(System.getProperty("user.home"), ".local", "share", "applications").toFile()
     }
 
-    private fun createDesktopEntryContent(descriptor : DeploymentDescriptor, installDir : File) : String {
+    private fun createDesktopEntryContent(descriptor : DeploymentDescriptor, installDir : File, appName : String) : String {
         val input = javaClass.getResourceAsStream("/install/linux_desktop_entry.desktop")
         val content : String = input.bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
         // replace placeholders with actual data
-        return content.replace("{app.name}", /*descriptor.info.name*/ "some name")
+        return content.replace("{app.name}", appName)
                 .replace("{app.desc}", "")
-//                .replace("{app.launcher}", File(installDir, descriptor.jvm.launcher.fileName).absolutePath)
+                .replace("{app.launcher}", File(installDir, descriptor.jvmDescriptor.launcher.fileName).absolutePath)
                 .replace("{app.icon}", File(installDir, descriptor.icons[0].fileName).absolutePath)
                 .replace("{app.dir}", installDir.absolutePath)
                 .replace("{app.categories}", "")

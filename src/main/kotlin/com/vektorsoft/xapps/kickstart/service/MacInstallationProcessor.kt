@@ -17,6 +17,9 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardCopyOption
 
+/**
+ * Installation processor for Mac OS X platform.
+ */
 class MacInstallationProcessor : InstallationProcessor {
 
 	val logger by logger(MacInstallationProcessor::class.java)
@@ -35,7 +38,7 @@ class MacInstallationProcessor : InstallationProcessor {
 		Files.move(Path.of(appDir.absolutePath, descriptor.jvmDescriptor.splashScreen.fileName), Path.of(macOsDir.absolutePath, descriptor.jvmDescriptor.splashScreen.fileName), StandardCopyOption.REPLACE_EXISTING)
 		moveDependencies(appDir)
 		createInfoPlist(descriptor, application)
-
+		logger.info("Installation completed successfully")
 	}
 
 	private fun createBundleDirs(application: App) {

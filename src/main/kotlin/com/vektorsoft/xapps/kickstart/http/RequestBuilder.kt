@@ -11,6 +11,7 @@ package com.vektorsoft.xapps.kickstart.http
 import com.vektorsoft.xapps.kickstart.detectCpuArch
 import com.vektorsoft.xapps.kickstart.detectOs
 import com.vektorsoft.xapps.kickstart.logger
+import com.vektorsoft.xapps.kickstart.model.AppModel
 import com.vektorsoft.xapps.kickstart.model.BinaryData
 import java.net.URI
 import java.net.http.HttpRequest
@@ -20,7 +21,7 @@ class RequestBuilder {
 	val logger by logger(RequestBuilder::class.java)
 
     fun buildAppListRequest() : HttpRequest {
-        val uri = URI("http://localhost:8080/applications")
+        val uri = URI("${AppModel.currentSeverBaseUrl.value}/applications")
 		logger.debug("Created app list request URL: $uri")
         return HttpRequest.newBuilder(uri)
                 .header("Accept", "application/json")
@@ -29,7 +30,7 @@ class RequestBuilder {
     }
 
     fun buildAppImageRequest(appId : String) : HttpRequest {
-        val uri = URI("http://localhost:8080/applications/$appId/img")
+        val uri = URI("${AppModel.currentSeverBaseUrl.value}/applications/$appId/img")
 		logger.debug("Created app image request URL: $uri")
         return HttpRequest.newBuilder(uri)
                 .GET()
@@ -37,7 +38,7 @@ class RequestBuilder {
     }
 
     fun buildAppConfigFileRequest(applicationId : String) : HttpRequest {
-        var uri = URI("http://localhost:8080/apps/$applicationId/content/config/${detectOs().toString().toLowerCase()}/${detectCpuArch()}")
+        var uri = URI("${AppModel.currentSeverBaseUrl.value}/apps/$applicationId/content/config/${detectOs().toString().toLowerCase()}/${detectCpuArch()}")
         return HttpRequest.newBuilder(uri)
                 .header("Accept", "application/xml")
                 .GET()
@@ -45,7 +46,7 @@ class RequestBuilder {
     }
 
     fun buildBinaryDownloadUrl(data : BinaryData, serverUrl : String) : HttpRequest {
-        val uri = URI("http://localhost:8080/apps/content/${data.hash}")
+        val uri = URI("${AppModel.currentSeverBaseUrl.value}/apps/content/${data.hash}")
         return HttpRequest.newBuilder(uri)
                 .GET()
                 .build()
@@ -56,7 +57,7 @@ class RequestBuilder {
 							binaryType : String,
 							implementation : String,
 							semanticVersion : String? = null) : HttpRequest {
-		val sb = StringBuilder("http://localhost:8080/jvm")
+		val sb = StringBuilder("${AppModel.currentSeverBaseUrl.value}/jvm")
 		sb.append(jvmUrlQueryString(provider, jdkVersion, binaryType, implementation, semanticVersion))
 		val uri = URI(sb.toString())
 		logger.debug("Created JVM download request URL: $uri")
@@ -70,7 +71,7 @@ class RequestBuilder {
 						binaryType : String,
 						implementation : String,
 						semanticVersion : String? = null) : HttpRequest {
-		val sb = StringBuilder("http://localhost:8080/jvminfo")
+		val sb = StringBuilder("${AppModel.currentSeverBaseUrl.value}/jvminfo")
 		sb.append(jvmUrlQueryString(provider, jdkVersion, binaryType, implementation, semanticVersion))
 		val uri = URI(sb.toString())
 		logger.debug("Created JVM info request URL: $uri")

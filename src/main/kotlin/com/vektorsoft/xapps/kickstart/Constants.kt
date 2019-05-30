@@ -25,3 +25,8 @@ const val DEPENDENCY_SCOPE_CLASSPATH = "CLASSPATH"
  * Binary mask to check executable flag of Unix file permissions
  */
 const val EXEC_MODE_MASK =  0b001001001
+
+/**
+ * Propertu name of default server base URL
+ */
+const val DEFAULT_SERVER_PROPERTY = "server.default"
