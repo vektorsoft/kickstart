@@ -14,7 +14,7 @@
             <icon file-name="maicon.icns" hash="9ce8ea9e46a3999f97b06a53948507b14e20f70e" path="data/icons/maicon.icns" size="128885"/>
         </icons>
     </info>
-    <jvm version="8">
+    <jvm version="JDK_8">
         <dependencies>
             <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="deployer" file-name="deployer-1.0.0-SNAPSHOT.jar" group-id="com.vektorsoft.xapps" hash="cd9ad8d87cad5f0de6cf19d6565f68088664c0aa" packaging="jar" scope="CLASSPATH" size="139607" version="1.0.0-SNAPSHOT" xsi:type="mavenDependency"/>
             <dependency xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" artifact-id="jaxb-core" file-name="jaxb-core-2.3.0.jar" group-id="com.sun.xml.bind" hash="d044c784e41d026778693fb44a8026c1fd9a7506" packaging="jar" scope="CLASSPATH" size="255502" version="2.3.0" xsi:type="mavenDependency"/>

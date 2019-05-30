@@ -20,6 +20,7 @@ import com.vektorsoft.xapps.kickstart.model.AppModel
 import com.vektorsoft.xapps.kickstart.model.BinaryData
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Matchers
@@ -34,6 +35,11 @@ class DefaultHttpClientTest {
 	@Rule
 	@JvmField
 	var server = WireMockRule()
+
+	@Before
+	fun setup() {
+		AppModel.currentSeverBaseUrl.value = "http://localhost:8080"
+	}
 
 	@Test
 	fun getAppListTest() {
