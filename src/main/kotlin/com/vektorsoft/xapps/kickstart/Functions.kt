@@ -52,6 +52,10 @@ fun isJvmPresent(jvmDescriptor: JvmDescriptor) : Boolean {
 		sb.append("-").append(jvmDescriptor.exactVersion)
 	}
 	val fileName = sb.toString()
+	val jvmDir = jvmDirLocation().toFile()
+	if(!jvmDir.exists()) {
+		jvmDir.mkdirs()
+	}
 	val target = jvmDirLocation().toFile().listFiles().find { it.name.startsWith(fileName) }
 	return target != null
 }

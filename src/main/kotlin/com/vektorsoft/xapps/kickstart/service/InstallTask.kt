@@ -45,7 +45,7 @@ class InstallTask(val app: App) : Task<Void>(), Flow.Subscriber<DownloadResult> 
 		installProcessor = when (os) {
 			OS.MAC -> MacInstallationProcessor()
 			OS.LINUX -> LinuxInstallationProcessor()
-			OS.WINDOWS -> MacInstallationProcessor()
+			OS.WINDOWS -> WindowsInstallationProcessor()
 		}
 	}
 
